@@ -1,14 +1,18 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import Logo from "../../../public/Logo.png";
 import rightIcon from "../../../public/rightIcon.png";
-const Header = () => {
+import Link from "next/link";
+const Header = ({ title }) => {
   return (
     <header className="flex justify-between items-center h-15 ">
       {/* left */}
       <div className="flex items-center  gap-4">
         <div className="log font-extrabold">
-          <Image src={Logo.src} height={50} width={50} alt="logo" />
+          <Link href="/">
+            <Image src={Logo.src} height={50} width={50} alt="logo" />
+          </Link>
         </div>
         <div className="flex items-center">
           <div className="navIcon text-2xl">+</div>
@@ -17,7 +21,7 @@ const Header = () => {
       </div>
       {/* middle */}
       <div className="flex  items-center gap-1 cursor-pointer">
-        <span> Untitled </span>
+        <span> {title} </span>
         <span className=" rotate-180 ">^</span>
       </div>
       {/* right */}

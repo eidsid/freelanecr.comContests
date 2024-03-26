@@ -3,50 +3,19 @@ import Link from "next/link";
 import SecondaryHeader from "@/components/secendryheader/secondaryHeader";
 import Image from "next/image";
 import chatimage from "../../public/chatimage.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
-  useState(true);
-  const chats = [
-    {
-      id: "1212",
-      date: "12/11/2024",
-      title: "Untitled",
-      messages: [
-        {
-          messagecontent: "welcome",
-          file: "",
-          sender: "user",
-          time: new Date().toLocaleTimeString(),
-        },
-        {
-          messagecontent: "Hello, how are you Today",
-          file: "",
-          sender: "boot",
-          time: new Date().toLocaleTimeString(),
-        },
-      ],
-    },
-    {
-      id: "1212",
-      date: "13/11/2024",
-      title: "Untitled",
-      messages: [
-        {
-          messagecontent: "welcome",
-          file: "",
-          sender: "user",
-          time: new Date().toLocaleTimeString(),
-        },
-        {
-          messagecontent: "Hello, how are you Today",
-          file: "",
-          sender: "boot",
-          time: new Date().toLocaleTimeString(),
-        },
-      ],
-    },
-  ];
+  const [chats, setchats] = useState([]);
+  const get_chats = async () => {
+    const chat = await axios.get("./api/chats/");
+
+    setchats(chat.data);
+  };
+  useEffect(() => {
+    get_chats();
+  }, []);
   return (
     <div className=" h-svh  p-4 container m-auto flex flex-col  items-center justify-between gap-4 text-center">
       <SecondaryHeader />
@@ -58,6 +27,7 @@ export default function Home() {
             src={chatimage.src}
             width={700}
             height={60}
+            alt="got to chat page"
             className="  rounded-lg overflow-hidden border  m-auto my-4"
           />
         </Link>

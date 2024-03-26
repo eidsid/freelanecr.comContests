@@ -4,7 +4,6 @@ import MessageShow from "@/components/messages/messageShow";
 import TypingIndicator from "@/components/TypingIndicator/TypingIndicator";
 import middleicon from "../../../public/middleicon.png";
 import Image from "next/image";
-import Link from "next/link";
 import fileicon from "../../../public/fileicon.png";
 import axios from "axios";
 import Header from "@/components/header/Header";
@@ -20,14 +19,31 @@ class Message {
 }
 
 const Chatbot = ({ params }) => {
-  // const { id } = { params };use for get  chats
   const user = { name: "Eid Sayed" };
+  const { id } = params; //use for get  chats
+
+  const [lastChat, setlastChat] = useState({}); // State to manage lastChat
   const [messages, setMessages] = useState([]); // State to manage messages
   const [messageText, setmessageText] = useState(""); // State to  messageText
   const [fileContent, setfileContent] = useState(""); // State to file
   const [isTyping, setIsTyping] = useState(false); // State to track typing indicator
   const [SubscribtionNotification, setSubscribtionNotification] =
     useState(true); //state for subscribtion notification
+  useEffect(() => {
+    const getLastchatData = async () => {
+      const LastchatData = await axios.get(`./api/chats/${id}`);
+      if (LastchatData.data) {
+        setlastChat(LastchatData.data);
+      }
+
+      if (LastchatData?.data?.messages?.length) {
+        setMessages(() => [...LastchatData.data.messages]);
+        console.log();
+      }
+    };
+    getLastchatData();
+  }, [id]);
+
   const subscriptionPlan = "basic";
 
   const messagesEndRef = useRef(null);
@@ -65,10 +81,10 @@ const Chatbot = ({ params }) => {
 
   return (
     <div className="w-10/12 flex flex-col justify-between p-4 m-auto">
-      <Header />
+      <Header title={lastChat.title || "Untitled"} />
       <div className="messaging-area relative h-96 py-8 w-full">
         <div className="overflow-y-scroll h-80 nocsrolbar">
-          {!messages.length ? (
+          {!messages?.length ? (
             <div
               className="w-full h-full flex items-center justify-center gap-2"
               ref={messagesEndRef}

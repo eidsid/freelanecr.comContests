@@ -14,7 +14,7 @@ const SecondaryHeader = () => {
       </div>
       {/* middle */}
       <div className="flex  items-center gap-1 cursor-pointer">
-        <Image src={middleicon.src} width={30} height={30} />
+        <Image src={middleicon.src} width={30} height={30} alt="logo" />
         <span> Claude </span>
       </div>
       {/* right */}
